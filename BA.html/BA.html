@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+    <body>
+
+        <form onsubmit="savetoLocalStorage(event)">
+            <label>  Name</label>
+            <input type="Text" name="username" />
+            <label >EmailId</label>
+            <input type="email" name="emailId" />
+            <label >Phone Number</label>
+            <input type="tel" name="phonenumber" />
+            <button type="submit">submit</button>
+        </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
+        <ul id="ListOfUsers"></ul>
+        <script>
+            function savetoLocalStorage(event){
+                event.preventDefault();
+                const name=event.target.username.value;
+                const email=event.target.emailId.value
+                const phonenumber=event.target.phonenumber.value
+                // localStorage.setItem('name',name);
+                // localStorage.setItem('email',email)
+                // localStorage.setItem('phonenumber',phonenumber);
+                const obj={
+                    name,
+                    email,
+                    phonenumber
+                }
+                axios.post("https://crudcrud.com/api/63a7b3961b5d4241af42a671342433f8/appontmentbooking", obj)
+                .then((response)=>{
+                    console.log(response)
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+                // localStorage.setItem(obj.email,JSON.stringify(obj))
+                ShowNewUserOnScreen(obj)
+            }
+            window.addEventListener("DOMContentLoaded", () => {
+                axios.get("https://crudcrud.com/api/63a7b3961b5d4241af42a671342433f8/appontmentbooking")
+                .then((response)=>{
+                    console.log(response)
+
+                    for(var i=0;i<response.data.length;i++)
+                    {
+                        ShowNewUserOnScreen(response.data[i])
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+                // const localStorageObj = localStorage;
+                // const localstoragekeys  = Object.keys(localStorageObj)
+
+                // for(var i =0; i< localstoragekeys.length; i++){
+                //     const key = localstoragekeys[i]
+                //     const userDetailsString = localStorageObj[key];
+                //     const userDetailsObj = JSON.parse(userDetailsString);
+                //     ShowNewUserOnScreen(userDetailsObj)
+                // }
+            })
+            function ShowNewUserOnScreen(user){
+                event.preventDefault();
+                const parentNode=document.getElementById("ListOfUsers")
+                const childHTML=`<li id=${user.email}>${user.name}-${user.email}-${user.phonenumber}<button onclick=deleteUser('${user.email}')> Delete User </button></li>`
+                parentNode.innerHTML=parentNode.innerHTML+childHTML;
+            }
+            function deleteUser(emailId)
+            {
+                console.log(emailId)
+                localStorage.removeItem(emailId)
+                removeUserFromScreen(emailId)
+            }
+
+            function removeUserFromScreen(emailId){
+                const parentNode=document.getElementById("ListOfUsers")
+                const ChildNodetoBeDeleted=document.getElementById(emailId)
+                parentNode.removeChild(ChildNodetoBeDeleted)
+            }
+            
+            // window.addEventListener("DomContentLoaded",()=>{
+            //     axios.get("https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js")
+            //     .then((response)=>{
+            //         console.log(response)
+            //     })
+            //     .catch((err)=>{
+            //         console.log(err)
+            //     })
+            // })
+            // function showNewUserOnScren(user){
+            //     document.getElementById('name').value='';
+            //     document.getElementById('email').value='';
+            //     document.getElementById('email').value='';
+            // }
+            
+        </script>
+        
+    </body>
+</html> 
