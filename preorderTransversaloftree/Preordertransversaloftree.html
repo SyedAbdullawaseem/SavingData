@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+   <title>Pre-Order Transversal of a tree</title>
+   <p id="param"></p>
+   <script>
+      class Node{
+         constructor(value){
+            this.key=value;
+            this.left=null;
+            this.right=null;
+         }
+      }
+
+      function PreorderTree(node){
+         if(node==null)
+         return;
+         document.write(node.key+"-->");
+         PreorderTree(node.left)
+         PreorderTree(node.right)
+      }
+
+      root=new Node('1');
+      root.left=new Node('2')
+      root.left.left=new Node('4')
+      root.right=new Node('3')
+      root.right.left=new Node('5')
+      root.right.left.left=new Node('7')
+      root.right.left.right=new Node('8')
+      root.right.right=new Node('6')
+      document.getElementById('param').innerHTML= "Pre-order traversal of binary tree will be:" + PreorderTree(root)
+   </script>
+</html>
